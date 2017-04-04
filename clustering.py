@@ -21,12 +21,9 @@ def get_distance(i, j):
     j = int(j[0])
     return distances[i][j]
 
-
-# X = [[x] for x in range(len(distances))]
-# db = DBSCAN(eps=0.3, min_samples=10, metric=get_distance).fit_predict(X)
-
-mds = manifold.MDS(n_components=2, n_jobs=-1)
-X = mds.fit_transform(distances)
+tr = manifold.MDS(n_components=2, n_jobs=-1)
+# tr = manifold.TSNE(n_components=2, init='pca')
+X = tr.fit_transform(distances)
 # X = StandardScaler().fit_transform(X)
 
 y_pred = DBSCAN(n_jobs=-1).fit_predict(X)
