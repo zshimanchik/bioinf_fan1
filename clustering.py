@@ -6,6 +6,7 @@ import networkx as nx
 from mpl_toolkits.mplot3d import Axes3D
 from sklearn import manifold
 from sklearn.preprocessing.data import StandardScaler
+from sklearn.decomposition import PCA
 
 with open('matrix.pkl', 'rb') as f:
     distances = np.array(pickle.load(f))
@@ -21,9 +22,13 @@ def get_distance(i, j):
     j = int(j[0])
     return distances[i][j]
 
-tr = manifold.MDS(n_components=2, n_jobs=-1)
+
+distances = StandardScaler().fit_transform(distances)
+# tr = manifold.MDS(n_components=2, n_jobs=-1)
 # tr = manifold.TSNE(n_components=2, init='pca')
+tr = PCA(n_components=2)
 X = tr.fit_transform(distances)
+# print("mean: {}\nprojection: {}\nexaplained variance ratio: {}".format(tr.mean_, tr.components_, tr.explained_variance_ratio_))
 # X = StandardScaler().fit_transform(X)
 
 y_pred = DBSCAN(n_jobs=-1).fit_predict(X)
